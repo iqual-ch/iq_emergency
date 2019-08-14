@@ -1,0 +1,4 @@
+administer iq_emergency settings:
+  title: 'Administer Emergency Settings'
+  description: 'Allow to access the administration configuration for the Emergency settings.'
+  restrict access: true

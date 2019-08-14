@@ -1,0 +1,8 @@
+name: iQual Emergency
+description: Allows to set up emergency pages to which users are redirected when in emergency mode.
+package: Custom
+type: module
+core: 8.x
+
+dependencies:
+  - redirect:redirect
