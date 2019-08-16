@@ -5,6 +5,11 @@ namespace Drupal\iq_emergency\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Menu\MenuLinkBase;
+use Drupal\Core\Menu\MenuLinkTree;
+use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\node\Entity\Node;
+use Drupal\system\Entity\Menu;
 
 /**
  * Class EmergencyForm.
@@ -35,12 +40,23 @@ class EmergencyForm extends ConfigFormBase
             '#description' => 'Check this box if the website is in emergency mode.',
             '#default_value' => $emergency_mode
         ];
-        $form['admin_theme']['admin_theme'] = [
-            '#type' => 'select',
-            '#options' => [0 => $this->t('Default theme')] + $theme_options,
-            '#title' => $this->t('Administration theme'),
-            '#description' => $this->t('Choose "Default theme" to always use the same theme as the rest of the site.'),
-            '#default_value' => $this->config('system.theme')->get('admin'),
+        // @todo Get autocomplete for pages instead of select.
+        $nids = \Drupal::entityQuery('node')->condition('type','page')->execute();
+        $nodes =  Node::loadMultiple($nids);
+        $options = [];
+        /** @var Node $node */
+        foreach ($nodes as $node) {
+            $options[$node->id()] = $node->label();
+        }
+
+
+        $form['emergency_page']  = [
+            '#type' => 'entity_autocomplete',
+            '#title' => 'Emergency page',
+            '#target_type' => 'node',
+            '#selection_settings' => ['target_bundles' =>[ 'page' => 'page']],
+            '#validate_reference' => FALSE,
+            '#maxlength' => 1024,
         ];
 
         $form['actions']['#type'] = 'actions';
@@ -61,6 +77,7 @@ class EmergencyForm extends ConfigFormBase
 
         $this->config('iq_emergency.settings')
             ->set('emergency_mode', $form_state->getValue('emergency_mode'))
+            ->set('emergency_page', $form_state->getValue('emergency_page'))
             ->save();
 
         parent::submitForm($form, $form_state);

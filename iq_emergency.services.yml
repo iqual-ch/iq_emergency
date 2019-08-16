@@ -1,0 +1,6 @@
+services:
+  iq_emergency.request_subscriber:
+    class: Drupal\iq_emergency\EventSubscriber\EmergencyRedirectRequestSubscriber
+    arguments: ['@config.factory', '@redirect.checker', '@path.matcher']
+    tags:
+      - { name: event_subscriber }

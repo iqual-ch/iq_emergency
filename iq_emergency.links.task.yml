@@ -1,0 +1,4 @@
+iq_emergency.settings:
+  title: Configure
+  route_name: iq_emergency.settings
+  base_route: iq_emergency.settings

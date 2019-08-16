@@ -2,8 +2,8 @@ iq_emergency.settings:
   path: '/admin/config/system/emergency'
   defaults:
     _title: 'Emergency page'
+    _form: '\Drupal\iq_emergency\Form\EmergencyForm'
   requirements:
     _permission: 'administer iq_emergency settings'
-    _form: '\Drupal\iq_emergency\Form\EmergencyForm'
   options:
     _admin_route: TRUE
